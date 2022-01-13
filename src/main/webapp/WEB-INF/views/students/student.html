@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Student</title>
+</head>
+<body>
+<p th:text="${'Name: ' + student.getName()}">NAME</p>
+<p th:text="${'Surname: ' + student.getSurname()}">SURNAME</p>
+<p th:text="${'Patronymic: ' + student.getPatronymic()}">PATRONYMIC</p>
+
+<form th:method="GET" th:action="@{/students/{id}/marks(id=${student.getId()})}">
+    <input type="submit" value="Marks">
+</form>
+
+<form th:method="GET" th:action="@{/students/{id}/edit(id=${student.getId()})}">
+    <input type="submit" value="Update student">
+</form>
+
+<form th:method="GET" th:action="@{/students}">
+    <input type="submit" value="Home">
+</form>
+</body>
+</html>
