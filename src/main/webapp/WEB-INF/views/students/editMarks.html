@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:method="PATCH" th:action="@{/students/{id}/marks(id=${student.getId()})}" th:object="${subject}">
+    <label for="id">ID: </label>
+    <input type="text" th:field="*{id}" id="id" readonly/> <br/>
+    <label for="name">Discipline name: </label>
+    <input type="text" th:field="*{name}" id="name"/> <br/>
+    <label for="mark">Discipline grade: </label>
+    <input type="text" th:field="*{mark}" id="mark"/> <br/>
+    <br/>
+    <input type="submit" value="Update!"/>
+</form>
+
+</body>
+</html>
