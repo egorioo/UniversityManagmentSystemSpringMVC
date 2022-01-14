@@ -1,56 +1,84 @@
 package spring.dao;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import spring.models.Student;
 import spring.models.Subject;
 
+import javax.swing.plaf.nimbus.State;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 @Component
 public class StudentDAO {
-    private static int STUDENTS_COUNT;
-    private List<Student> students;
 
-    {
-        students = new ArrayList<>();
+    private static Connection connection;
+    private static String URL = "jdbc:postgresql://localhost:5432/db";
+    private static String username = "postgres";
+    private static String password = "postgres";
 
-        Student s1 = new Student("Egor","Rudenko","Andriyovuch","egorrudenko2002@gmail.com",++STUDENTS_COUNT,"kb91",3);
-        s1.setSubjects(new ArrayList<Subject>(Arrays.asList(new Subject("math",74,0), new Subject("english",70,1))));
-        Student s2 = new Student("Ann","Dragun","MAximivna","ann2005@gmail.com",++STUDENTS_COUNT,"in01",2);
-        s2.setSubjects(new ArrayList<Subject>(Arrays.asList(new Subject("ukrainian",50,0), new Subject("english",99,1))));
-        Student s3 = new Student("Vasya","Kaplun","VAsil","vasya2@gmail.com",++STUDENTS_COUNT,"it91",3);
-        s3.setSubjects(new ArrayList<Subject>(Arrays.asList(new Subject("lan",64,0), new Subject("english",79,1))));
-        students.add(s1);
-        students.add(s2);
-        students.add(s3);
+    static {
+        try {
+            Class.forName("org.postgresql.Driver");
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            connection = DriverManager.getConnection(URL, username, password);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     public List<Student> showAll() {
+        List<Student> students = new ArrayList<>();
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet =  statement.executeQuery("SELECT * FROM students");
+
+            while (resultSet.next()) {
+                Student student = new Student();
+                student.setName(resultSet.getString("name"));
+                student.setSurname(resultSet.getString("surname"));
+
+                students.add(student);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return students;
     }
 
     public Student showIndex(int id) {
-        return students.stream().filter(student -> student.getId() == id).findAny().orElse(null);
+        /*return students.stream().filter(student -> student.getId() == id).findAny().orElse(null);*/
+        return null;
     }
 
     public void save(Student student) {
-        student.setId(++STUDENTS_COUNT);
-        students.add(student);
+       /* student.setId(++STUDENTS_COUNT);
+        students.add(student);*/
     }
 
     public void update(int id, Student student) {
-        Student studentToBeUpdated = showIndex(id);
+        /*Student studentToBeUpdated = showIndex(id);
         studentToBeUpdated.setName(student.getName());
         studentToBeUpdated.setSurname(student.getSurname());
         studentToBeUpdated.setPatronymic(student.getPatronymic());
         studentToBeUpdated.setGroup(student.getGroup());
-        studentToBeUpdated.setCourse(student.getCourse());
+        studentToBeUpdated.setCourse(student.getCourse());*/
     }
 
     public void delete(int id) {
-        students.removeIf(student -> student.getId() == id);
+        //students.removeIf(student -> student.getId() == id);
     }
 
 
