@@ -1,92 +1,155 @@
 package spring.dao;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import spring.models.Student;
 import spring.models.Subject;
 
+import javax.swing.plaf.nimbus.State;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 @Component
 public class StudentDAO {
-    private static int STUDENTS_COUNT;
-    private List<Student> students;
 
-    {
-        students = new ArrayList<>();
+    private static Connection connection;
+    private static String URL = "jdbc:postgresql://localhost:5432/db";
+    private static String username = "postgres";
+    private static String password = "postgres";
 
-        Student s1 = new Student("Egor","Rudenko","Andriyovuch","egorrudenko2002@gmail.com",++STUDENTS_COUNT,"kb91",3);
-        s1.setSubjects(new ArrayList<Subject>(Arrays.asList(new Subject("math",74,0), new Subject("english",70,1))));
-        Student s2 = new Student("Ann","Dragun","MAximivna","ann2005@gmail.com",++STUDENTS_COUNT,"in01",2);
-        s2.setSubjects(new ArrayList<Subject>(Arrays.asList(new Subject("ukrainian",50,0), new Subject("english",99,1))));
-        Student s3 = new Student("Vasya","Kaplun","VAsil","vasya2@gmail.com",++STUDENTS_COUNT,"it91",3);
-        s3.setSubjects(new ArrayList<Subject>(Arrays.asList(new Subject("lan",64,0), new Subject("english",79,1))));
-        students.add(s1);
-        students.add(s2);
-        students.add(s3);
+    static {
+        try {
+            Class.forName("org.postgresql.Driver");
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            connection = DriverManager.getConnection(URL, username, password);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     public List<Student> showAll() {
+        List<Student> students = new ArrayList<>();
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet =  statement.executeQuery("SELECT * FROM students");
+
+            while (resultSet.next()) {
+                Student student = new Student();
+                student.setName(resultSet.getString("name"));
+                student.setSurname(resultSet.getString("surname"));
+                student.setId(resultSet.getInt("student_id"));
+                students.add(student);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return students;
     }
 
     public Student showIndex(int id) {
-        return students.stream().filter(student -> student.getId() == id).findAny().orElse(null);
+        Student student = null;
+        try {
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("SELECT * FROM STUDENTS " +
+                            "join groups g on(g.group_id = students.group) " +
+                            "join faculties f on (f.faculty_id = g.faculty)  " +
+                            "WHERE student_id=?;");
+            preparedStatement.setInt(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            student = new Student();
+            student.setId(resultSet.getInt("student_id"));
+            student.setName(resultSet.getString("name"));
+            student.setSurname(resultSet.getString("surname"));
+            student.setPatronymic(resultSet.getString("patronymic"));
+
+            student.setEmail(resultSet.getString("email"));
+            student.setCourse(resultSet.getInt("course"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return student;
     }
 
     public void save(Student student) {
-        student.setId(++STUDENTS_COUNT);
-        students.add(student);
-    }
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("insert into users(status) values ('STUDENT');");
+            ResultSet resultSet =  statement.executeQuery("select * from users order by id desc;");
+            resultSet.next();
+            int id = resultSet.getInt("id");
 
-    public void update(int id, Student student) {
-        Student studentToBeUpdated = showIndex(id);
-        studentToBeUpdated.setName(student.getName());
-        studentToBeUpdated.setSurname(student.getSurname());
-        studentToBeUpdated.setPatronymic(student.getPatronymic());
-        studentToBeUpdated.setGroup(student.getGroup());
-        studentToBeUpdated.setCourse(student.getCourse());
-    }
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("insert into students(student_id, \"group\", faculty, name, surname, patronymic, email, course) " +
+                            "values (?,?,?,?,?,?,?,?);");
+            preparedStatement.setInt(1,id);
+            preparedStatement.setInt(2,student.getGroupId());
+            preparedStatement.setInt(3,student.getFacultyId());
+            preparedStatement.setString(4,student.getName());
+            preparedStatement.setString(5,student.getSurname());
+            preparedStatement.setString(6,student.getPatronymic());
+            preparedStatement.setString(7,student.getEmail());
+            preparedStatement.setInt(8,student.getCourse());
 
-    public void delete(int id) {
-        students.removeIf(student -> student.getId() == id);
-    }
+            preparedStatement.executeUpdate();
 
-
-    //marks
-    public void updateMark(int id, Subject subject) {
-        Student student = showIndex(id);
-        for (int i = 0; i < student.getSubjects().size(); i++) {
-            if (student.getSubjects().get(i).getId() == subject.getId()) {
-                student.getSubjects().set(i,subject);
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
-    public void addNewMark(int id, Subject subject) {
-        Student student = showIndex(id);
-        subject.setId(student.getSubjects().size());
-        student.getSubjects().add(subject);
-    }
+    public void update(int id, Student student) {
+        try {
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("UPDATE students " +
+                            "SET \"group\"=?,faculty=?,name=?,surname=?,patronymic=?,email=?,course=? " +
+                            "where student_id = ?;");
 
-    public void deleteDiscipline(int id, Subject subject) {
-        Student student = showIndex(id);
-        System.out.println(subject);
-        System.out.println(student.getSubjects());
-        student.getSubjects().removeIf(subject1 -> subject1.getName().equals(subject.getName()));
-    }
-    /*public void save(Person person) {
-        person.setId(++STUDENTS_COUNT);
-        students.add(person);
-    }
+            preparedStatement.setInt(1,student.getGroupId());
+            preparedStatement.setInt(2,student.getFacultyId());
+            preparedStatement.setString(3,student.getName());
+            preparedStatement.setString(4,student.getSurname());
+            preparedStatement.setString(5,student.getPatronymic());
+            preparedStatement.setString(6,student.getEmail());
+            preparedStatement.setInt(7,student.getCourse());
+            preparedStatement.setInt(8,id);
 
-    public void update(int id, Person updatedPerson) {
-        Person personToBeUpdated = show(id);
-        personToBeUpdated.setName(updatedPerson.getName());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void delete(int id) {
-        students.removeIf(person -> person.getId() == id);
-    }*/
+        try {
+            PreparedStatement preparedStatementMarks =
+                    connection.prepareStatement("DELETE FROM marks WHERE student_id = ?");
+            preparedStatementMarks.setInt(1,id);
+            preparedStatementMarks.executeUpdate();
+
+            PreparedStatement preparedStatementStudents =
+                    connection.prepareStatement("DELETE FROM students WHERE student_id = ?");
+            preparedStatementStudents.setInt(1,id);
+            preparedStatementStudents.executeUpdate();
+            PreparedStatement preparedStatementUsers =
+                    connection.prepareStatement("DELETE FROM users WHERE id = ?");
+            preparedStatementUsers.setInt(1,id);
+            preparedStatementUsers.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

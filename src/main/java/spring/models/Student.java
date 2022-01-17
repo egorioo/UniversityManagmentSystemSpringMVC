@@ -4,26 +4,65 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Student {
+    private int id;
     private String name;
     private String surname;
     private String patronymic;
     private String email;
-    private int idStudent;
-    private String group;
+
+    private Group group;
+    private int groupId;
+    private Faculty faculty;
+
+
+
+    private int facultyId;
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
+
+    public int getFacultyId() {
+        return facultyId;
+    }
+
+    public void setFacultyId(int facultyId) {
+        this.facultyId = facultyId;
+    }
+
     private int course;
     private List<Subject> subjects = new ArrayList<>();
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public Faculty getFaculty() {
+        return faculty;
+    }
+
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+    }
 
     public Student() {
 
     }
 
-    public Student(String name, String surname, String patronymic, String email, int idStudent, String group, int course) {
+    public Student(String name, String surname, String patronymic, String email, int idStudent, int course) {
         this.name = name;
         this.surname = surname;
         this.patronymic = patronymic;
         this.email = email;
-        this.idStudent = idStudent;
-        this.group = group;
+        this.id = idStudent;
         this.course = course;
     }
 
@@ -68,19 +107,11 @@ public class Student {
     }
 
     public int getId() {
-        return idStudent;
+        return id;
     }
 
     public void setId(int id) {
-        this.idStudent = id;
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
+        this.id = id;
     }
 
     public int getCourse() {
@@ -98,8 +129,9 @@ public class Student {
                 ", surname='" + surname + '\'' +
                 ", patronymic='" + patronymic + '\'' +
                 ", email='" + email + '\'' +
-                ", id=" + idStudent +
-                ", group='" + group + '\'' +
+                ", id=" + id +
+                ", group='" + groupId + '\'' +
+                ", faculty='" + facultyId + '\'' +
                 ", course=" + course +
                 ", subjects=" + subjects +
                 '}';

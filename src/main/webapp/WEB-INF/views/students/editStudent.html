@@ -15,8 +15,21 @@
     <label for="patronymic">Enter patronymic: </label>
     <input type="text" th:field="*{patronymic}" id="patronymic"/>
     <br/>
-    <label for="group">Enter group: </label>
-    <input type="text" th:field="*{group}" id="group"/>
+    <!--fix-show selected-->
+    <label for="facultyId">Enter faculty: </label>
+    <select size="1" th:field="*{facultyId}">
+        <option th:each="faculty : ${faculties}"
+                th:value="${faculty.id}"
+                th:utext="${faculty.shortName}"/>
+    </select>
+    <br/>
+    <label for="groupId">Enter group: </label>
+    <!--fix-show selected-->
+    <select th:field="*{groupId}">
+        <option th:each="group : ${groups}"
+                th:value="${group.id}"
+                th:utext="${group.groupCode}"/>
+    </select>
     <br/>
     <label for="course">Enter course: </label>
     <input type="text" th:field="*{course}" id="course"/>
