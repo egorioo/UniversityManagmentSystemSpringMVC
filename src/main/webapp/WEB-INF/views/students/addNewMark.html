@@ -6,8 +6,14 @@
 </head>
 <body>
 <form th:method="POST" th:action="@{/students/{id}/marks(id=${student.getId()})}" th:object="${subject}">
-    <label for="name">Discipline name: </label>
-    <input type="text" th:field="*{name}" id="name"/> <br/>
+    <label for="id">Select discipline: </label>
+    <select size="1" th:field="*{id}">
+        <option th:each="subject : ${subjects}"
+                th:value="${subject.id}"
+                th:utext="${subject.name}"/>
+    </select>
+    <br/>
+
     <label for="mark">Discipline grade: </label>
     <input type="text" th:field="*{mark}" id="mark"/> <br/>
     <br/>

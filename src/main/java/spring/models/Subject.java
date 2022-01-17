@@ -4,25 +4,25 @@ import java.util.Objects;
 
 public class Subject {
     private String name;
-    private double mark;
-    private int idSubject;
+    private int mark;
+    private int id;
 
     public int getId() {
-        return idSubject;
+        return id;
     }
 
     public void setId(int id) {
-        this.idSubject = id;
+        this.id = id;
     }
 
     public Subject() {
 
     }
 
-    public Subject(String name, double mark, int id) {
+    public Subject(String name, int mark, int id) {
         this.name = name;
         this.mark = mark;
-        this.idSubject = id;
+        this.id = id;
     }
 
     public String getName() {
@@ -33,11 +33,11 @@ public class Subject {
         this.name = name;
     }
 
-    public double getMark() {
+    public int getMark() {
         return mark;
     }
 
-    public void setMark(double mark) {
+    public void setMark(int mark) {
         this.mark = mark;
     }
 
@@ -46,7 +46,7 @@ public class Subject {
         return "Subject{" +
                 "name='" + name + '\'' +
                 ", mark=" + mark +
-                ", id=" + idSubject +
+                ", id=" + id +
                 '}';
     }
 
@@ -55,11 +55,11 @@ public class Subject {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Subject subject = (Subject) o;
-        return Double.compare(subject.mark, mark) == 0 && idSubject == subject.idSubject && Objects.equals(name, subject.name);
+        return Double.compare(subject.mark, mark) == 0 && id == subject.id && Objects.equals(name, subject.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, mark, idSubject);
+        return Objects.hash(name, mark, id);
     }
 }

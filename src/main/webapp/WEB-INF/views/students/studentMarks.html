@@ -9,7 +9,9 @@
 <p th:text="${'Name: ' + student.getName()}">NAME</p>
 <p th:text="${'Surname: ' + student.getSurname()}">SURNAME</p> <!--Surname!!!!!-->
 <p th:text="${'Patronymic: ' + student.getPatronymic()}">PATRONYMIC</p>
-<p th:text="${'Group: ' + student.getGroup()}">GROUP</p>
+<p th:text="${'Group: ' + group.getGroupCode()}">GROUP</p>
+<p th:text="${'Speciality: ' + group.getFullName()}">Speciality</p>
+<p th:text="${'Faculty: ' + faculty.getFullName()}">Speciality</p>
 
 <table border="1">
     <tr th:each="subject : ${student.getSubjects()}">
@@ -21,7 +23,7 @@
             <form th:method="DELETE" th:action="@{/students/{id}/marks(id=${student.getId()})}">
                 <input type="submit" value="Delete">
             </form>-->
-            <form th:method="GET" th:action="@{/students/{id}/marks/{subject}/delete(id=${student.getId()},subject=${subject.getName()})}" >
+            <form th:method="DELETE" th:action="@{/students/{id}/marks/{subject}/delete(id=${student.getId()},subject=${subject.getName()})}" >
                 <input type="submit" value="Delete">
             </form>
         </td>
