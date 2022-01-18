@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table border="1">
+    <tr th:each="discipline : ${disciplines}">
+        <td th:text="${discipline.getName()}">Value</td>
+        <td th:text="${discipline.getHours()}">Value</td>
+        <td><a th:href="@{/disciplines/{id}/edit(id=${discipline.getId()})}">Edit</a></td>
+        <td>
+            <form th:method="DELETE" th:action="@{/disciplines/{id}(id=${discipline.getId()})}" >
+                <input type="submit" value="Delete">
+            </form>
+        </td>
+    </tr>
+</table>
+
+<form th:method="GET" th:action="@{/disciplines/new}">
+    <input type="submit" value="Add discipline">
+</form>
+
+<form th:method="GET" th:action="@{/}">
+    <input type="submit" value="Home">
+</form>
+
+</body>
+</html>
