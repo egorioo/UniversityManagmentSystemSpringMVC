@@ -28,4 +28,13 @@ public class Faculty {
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
+
+    @Override
+    public String toString() {
+        return "Faculty{" +
+                "id=" + id +
+                ", shortName='" + shortName + '\'' +
+                ", fullName='" + fullName + '\'' +
+                '}';
+    }
 }

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table border="1">
+    <tr th:each="group : ${groups}">
+        <td th:text="${group.getGroupCode()}">Value</td>
+        <td th:text="${group.getFullName()}">Value</td>
+        <td><a th:href="@{/groups/{id}/edit(id=${group.getId()})}">Edit</a></td>
+        <td>
+            <form th:method="DELETE" th:action="@{/groups/{id}(id=${group.getId()})}" >
+                <input type="submit" value="Delete">
+            </form>
+        </td>
+    </tr>
+</table>
+
+<form th:method="GET" th:action="@{/groups/new}">
+    <input type="submit" value="Add group">
+</form>
+
+<form th:method="GET" th:action="@{/}">
+    <input type="submit" value="Home">
+</form>
+
+</body>
+</html>

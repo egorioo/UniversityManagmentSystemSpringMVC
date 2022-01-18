@@ -51,11 +51,29 @@ public class FacultyDAO {
         return faculties;
     }
 
-    public Faculty getStudentFaculty(int id) {
+    public Faculty getStudentFaculty(int studentId) {
         Faculty faculty = null;
         try {
             PreparedStatement preparedStatement =
                     connection.prepareStatement("select f.faculty_id, f.faculty_code, f.faculty_full_name from students join faculties f on(f.faculty_id = students.faculty) where student_id = ?;");
+            preparedStatement.setInt(1,studentId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            faculty = new Faculty();
+            faculty.setId(resultSet.getInt("faculty_id"));
+            faculty.setShortName(resultSet.getString("faculty_code"));
+            faculty.setFullName(resultSet.getString("faculty_full_name"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return faculty;
+    }
+
+    public Faculty getFacultyIndex(int id) {
+        Faculty faculty = null;
+        try {
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("SELECT * FROM faculties where faculty_id = ?");
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
@@ -67,5 +85,41 @@ public class FacultyDAO {
             e.printStackTrace();
         }
         return faculty;
+    }
+
+    public void updateFaculty(int id, Faculty faculty) {
+        try {
+            PreparedStatement preparedStatementDiscipline =
+                    connection.prepareStatement("UPDATE faculties SET faculty_code = ?, faculty_full_name = ? where faculty_id = ?");
+            preparedStatementDiscipline.setString(1,faculty.getShortName());
+            preparedStatementDiscipline.setString(2,faculty.getFullName());
+            preparedStatementDiscipline.setInt(3,id);
+            preparedStatementDiscipline.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createFaculty(Faculty faculty) {
+        try {
+            PreparedStatement preparedStatementDiscipline =
+                    connection.prepareStatement("INSERT INTO faculties(faculty_code, faculty_full_name) VALUES(?,?)");
+            preparedStatementDiscipline.setString(1,faculty.getShortName());
+            preparedStatementDiscipline.setString(2,faculty.getFullName());
+            preparedStatementDiscipline.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteFaculty(int id) {
+        try {
+            PreparedStatement preparedStatementDiscipline =
+                    connection.prepareStatement("DELETE FROM faculties WHERE faculty_id = ?");
+            preparedStatementDiscipline.setInt(1,id);
+            preparedStatementDiscipline.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
