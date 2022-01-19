@@ -1,7 +1,8 @@
-package spring.security;
+package spring.security.dao;
 
 import org.springframework.stereotype.Component;
-import spring.models.Subject;
+import spring.security.model.Role;
+import spring.security.model.User;
 
 import java.sql.*;
 
@@ -38,6 +39,34 @@ public class UserDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             user = new User();
+            System.out.println(resultSet.getInt("id"));
+            System.out.println(resultSet.getString("login"));
+            System.out.println(resultSet.getString("password"));
+            user.setId(resultSet.getInt("id"));
+            user.setLogin(resultSet.getString("login"));
+            user.setPassword(resultSet.getString("password"));
+
+            String role = resultSet.getString("role");
+            if (role.equals("USER")) {
+                user.setRole(Role.USER);
+            } else {
+                user.setRole(Role.ADMIN);
+            }
+        } catch (SQLException e) {
+
+        }
+        return user;
+    }
+
+    /*public Optional<User> findByEmail(String email) {
+        User user = null;
+        try {
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("SELECT * FROM login_info where login = ?");
+            preparedStatement.setString(1,email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            user = new User();
             user.setId(resultSet.getInt("id"));
             user.setLogin(resultSet.getString("login"));
             user.setPassword(resultSet.getString("password"));
@@ -50,6 +79,7 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return user;
-    }
+        Optional<User> user1 = Optional.of(user);
+        return user1;
+    }*/
 }

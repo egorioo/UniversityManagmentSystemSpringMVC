@@ -1,4 +1,4 @@
-package spring.security;
+package spring.security.model;
 
 public enum Permission {
     DEVELOPERS_READ("developers:read"),

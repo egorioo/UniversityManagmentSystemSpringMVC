@@ -1,4 +1,6 @@
-package spring.security;
+package spring.security.model;
+
+import spring.security.model.Role;
 
 public class User {
     private int id;
@@ -46,5 +48,15 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                '}';
     }
 }

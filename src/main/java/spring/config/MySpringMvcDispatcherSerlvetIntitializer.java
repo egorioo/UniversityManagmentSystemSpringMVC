@@ -1,7 +1,7 @@
 package spring.config;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-import spring.security.WebSecurityConfig;
+import spring.security.config.SecurityConfig;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -9,7 +9,7 @@ import javax.servlet.ServletException;
 public class MySpringMvcDispatcherSerlvetIntitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[]{WebSecurityConfig.class};
+        return new Class[]{SecurityConfig.class};
     }
 
     @Override
