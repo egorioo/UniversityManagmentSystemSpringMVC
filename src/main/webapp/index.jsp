@@ -16,5 +16,8 @@
     <input type="submit" value="Faculties">
 </form>
 
+<form action="/auth/logout" method="POST">
+    <button type="submit">Logout</button>
+</form>
 </body>
 </html>
