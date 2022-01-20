@@ -3,11 +3,14 @@ package spring.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import spring.controllers.DefaultController;
+import spring.security.model.User;
 
 import java.util.Collection;
 import java.util.List;
 
 public class SecurityUser implements UserDetails {
+
     private final String username;
     private final String password;
     private final List<SimpleGrantedAuthority> authorities;
@@ -55,7 +58,14 @@ public class SecurityUser implements UserDetails {
 
     public static UserDetails fromUser(User user) {
         return new org.springframework.security.core.userdetails.User(
-                user.getLogin(),user.getPassword(),true,true,true,true, user.getRole().getAuthorities()
-        );
+                user.getLogin(),
+                user.getPassword(),
+                true,
+                true,
+                true,
+                true,
+                user.getRole().getAuthorities());
     }
+
+
 }

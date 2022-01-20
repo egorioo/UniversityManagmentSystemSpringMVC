@@ -58,6 +58,21 @@ public class UserDAO {
         return user;
     }
 
+    public boolean isStudent(int id) {
+        boolean isStudent = false;
+        try {
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("SELECT * FROM USERS WHERE id = ?");
+            preparedStatement.setInt(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            isStudent = resultSet.getString("status").equals("STUDENT");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return isStudent;
+    }
+
     /*public Optional<User> findByEmail(String email) {
         User user = null;
         try {

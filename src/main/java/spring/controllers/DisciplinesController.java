@@ -1,5 +1,6 @@
 package spring.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import spring.models.Subject;
 public class DisciplinesController {
     private final DisciplineDAO disciplineDAO;
 
+    @Autowired
     public DisciplinesController(DisciplineDAO disciplineDAO) {
         this.disciplineDAO = disciplineDAO;
     }
