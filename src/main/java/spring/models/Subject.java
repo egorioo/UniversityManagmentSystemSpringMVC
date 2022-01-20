@@ -6,6 +6,15 @@ public class Subject {
     private String name;
     private int mark;
     private int id;
+    private int hours;
+
+    public int getHours() {
+        return hours;
+    }
+
+    public void setHours(int hours) {
+        this.hours = hours;
+    }
 
     public int getId() {
         return id;

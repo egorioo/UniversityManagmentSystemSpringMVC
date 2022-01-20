@@ -33,7 +33,7 @@ public class MarksController {
         model.addAttribute("group",groupDAO.getStudentGroup(id));
         model.addAttribute("faculty",facultyDAO.getStudentFaculty(id));
 
-        return "students/studentMarks";
+        return "marks/studentMarks";
     }
 
     @GetMapping("/edit/{subject}")
@@ -45,7 +45,7 @@ public class MarksController {
                 .filter(subject1 -> subject1.getName().equals(subject))
                 .findFirst()
                 .orElse(null));
-        return "students/editMarks";
+        return "marks/editMarks";
     }
 
     @PatchMapping()
@@ -60,7 +60,7 @@ public class MarksController {
         model.addAttribute("subject", subject);
         model.addAttribute("subjects",disciplineDAO.getAllDisciplines());
         model.addAttribute("student", studentDAO.showIndex(id));
-        return "students/addNewMark";
+        return "marks/addNewMark";
     }
 
     @PostMapping()
