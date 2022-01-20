@@ -52,6 +52,7 @@ public class MarkDAO {
                 subject.setId(resultSet.getInt("discipline_id"));
                 subject.setMark(resultSet.getInt("mark"));
                 subject.setName(resultSet.getString("discipline_name"));
+                subject.setHours(resultSet.getInt("discipline_hours"));
 
                 subjects.add(subject);
             }

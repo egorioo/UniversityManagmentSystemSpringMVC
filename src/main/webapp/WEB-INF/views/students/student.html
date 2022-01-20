@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html  xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
+
 <head>
     <meta charset="UTF-8">
     <title>Student</title>
@@ -13,12 +15,20 @@
     <input type="submit" value="Marks">
 </form>
 
-<form th:method="GET" th:action="@{/students/{id}/edit(id=${student.getId()})}">
+<form th:method="GET" th:action="@{/students/{id}/settings(id=${student.getId()})}">
+    <input type="submit" value="Settings">
+</form>
+
+<form sec:authorize="hasAuthority('users:write')" th:method="GET" th:action="@{/students/{id}/edit(id=${student.getId()})}">
     <input type="submit" value="Update student">
 </form>
 
-<form th:method="GET" th:action="@{/students}">
+<form sec:authorize="hasAuthority('users:write')" th:method="GET" th:action="@{/students}">
     <input type="submit" value="All students">
+</form>
+
+<form sec:authorize="hasAuthority('users:read')" action="/auth/logout" method="POST">
+    <button type="submit">Logout</button>
 </form>
 </body>
 </html>

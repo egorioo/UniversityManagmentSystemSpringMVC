@@ -1,5 +1,6 @@
 package spring.controllers;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +20,14 @@ public class GroupsController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('users:write')")
     public String showAll(Model model) {
         model.addAttribute("groups",groupDAO.getAllGroups());
         return "groups/allGroups";
     }
 
     @GetMapping("/{id}/edit")
+    @PreAuthorize("hasAuthority('users:write')")
     public String editFaculty(Model model, @PathVariable int id) {
         model.addAttribute("group",groupDAO.getGroupIndex(id));
         model.addAttribute("faculties", facultyDAO.getAllFaculties());
@@ -32,6 +35,7 @@ public class GroupsController {
     }
 
     @GetMapping("/new")
+    @PreAuthorize("hasAuthority('users:write')")
     public String newFaculty(Model model) {
         Group group = new Group();
         model.addAttribute("group",group);
@@ -40,18 +44,21 @@ public class GroupsController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasAuthority('users:write')")
     public String create(@ModelAttribute("group") Group group) {
         groupDAO.createGroup(group);
         return "redirect:/groups";
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAuthority('users:write')")
     public String update(@ModelAttribute("group") Group group, @PathVariable int id) {
         groupDAO.updateGroup(id,group);
         return "redirect:/groups";
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('users:write')")
     public String delete(@PathVariable int id) {
         groupDAO.deleteGroup(id);
         return "redirect:/groups";

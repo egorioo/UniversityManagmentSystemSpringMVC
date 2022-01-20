@@ -105,6 +105,13 @@ public class StudentDAO {
 
             preparedStatement.executeUpdate();
 
+            PreparedStatement preparedStatementLog =
+                    connection.prepareStatement("insert into login_info(login, password, id, role) VALUES (?, '$2a$12$1nNZ70SEYtDIQtbldRxw2..iulgYqWhk79lO4oYmHENnM47QBMpzq',?,'USER')");
+            preparedStatementLog.setString(1,student.getEmail());
+            preparedStatementLog.setInt(2,id);
+
+            preparedStatementLog.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -147,6 +154,11 @@ public class StudentDAO {
                     connection.prepareStatement("DELETE FROM users WHERE id = ?");
             preparedStatementUsers.setInt(1,id);
             preparedStatementUsers.executeUpdate();
+
+            PreparedStatement preparedStatementLogInfo =
+                    connection.prepareStatement("DELETE FROM login_info WHERE id = ?");
+            preparedStatementLogInfo.setInt(1,id);
+            preparedStatementLogInfo.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();

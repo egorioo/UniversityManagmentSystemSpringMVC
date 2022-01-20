@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ADMIN</title>
+</head>
+<body>
+<p th:text="${'Name: ' + admin.getName()}">NAME</p>
+<p th:text="${'Surname: ' + admin.getSurname()}">SURNAME</p>
+<p th:text="${'Patronymic: ' + admin.getPatronymic()}">PATRONYMIC</p>
+
+<form th:method="GET" th:action="@{/disciplines}">
+    <input type="submit" value="Disciplines">
+</form>
+
+<form th:method="GET" th:action="@{/students}">
+    <input type="submit" value="Students">
+</form>
+
+<form th:method="GET" th:action="@{/faculties}">
+    <input type="submit" value="Faculties">
+</form>
+
+<form th:method="GET" th:action="@{/groups}">
+    <input type="submit" value="Groups">
+</form>
+
+<form action="/auth/logout" method="POST">
+    <button type="submit">Logout</button>
+</form>
+
+</body>
+</html>

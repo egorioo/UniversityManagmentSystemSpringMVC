@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:method="PATCH" th:action="@{/students/{id}/settings(id=${student.getId()})}" th:object="${user}">
+    <label for="login">Enter email: </label>
+    <input type="text" th:field="*{login}" id="login"/> <br/>
+    <label for="password">Enter password: </label>
+    <input type="password" th:field="*{password}" id="password"/> <br/>
+    <br/>
+    <input type="submit" value="Edit"/>
+</form>
+</body>
+</html>
