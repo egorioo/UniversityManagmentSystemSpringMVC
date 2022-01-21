@@ -15,8 +15,12 @@
     <input type="submit" value="Marks">
 </form>
 
-<form th:method="GET" th:action="@{/students/{id}/settings(id=${student.getId()})}">
+<form sec:authorize="hasAuthority('users:read')" th:method="GET" th:action="@{/students/{id}/settings(id=${student.getId()})}">
     <input type="submit" value="Settings">
+</form>
+
+<form sec:authorize="hasAuthority('users:read')" th:method="GET" th:action="@{/students/{id}/group(id=${student.getId()})}">
+    <input type="submit" value="Group">
 </form>
 
 <form sec:authorize="hasAuthority('users:write')" th:method="GET" th:action="@{/students/{id}/edit(id=${student.getId()})}">

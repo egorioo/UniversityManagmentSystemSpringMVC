@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
 <head>
     <meta charset="UTF-8">
     <title>ADMIN</title>
@@ -8,6 +9,10 @@
 <p th:text="${'Name: ' + admin.getName()}">NAME</p>
 <p th:text="${'Surname: ' + admin.getSurname()}">SURNAME</p>
 <p th:text="${'Patronymic: ' + admin.getPatronymic()}">PATRONYMIC</p>
+
+<!--<form th:method="GET" th:action="@{/settings}">
+    <input type="submit" value="Settings">
+</form>-->
 
 <form th:method="GET" th:action="@{/disciplines}">
     <input type="submit" value="Disciplines">

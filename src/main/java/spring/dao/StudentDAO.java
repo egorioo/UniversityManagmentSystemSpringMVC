@@ -2,6 +2,7 @@ package spring.dao;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import spring.models.Group;
 import spring.models.Student;
 import spring.models.Subject;
 
@@ -52,6 +53,37 @@ public class StudentDAO {
                 student.setId(resultSet.getInt("student_id"));
                 students.add(student);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return students;
+    }
+
+    public List<Student> getStudentsByGroup(int id) {
+        List<Student> students = null;
+        try {
+            PreparedStatement preparedStatementGroup =
+                    connection.prepareStatement("SELECT \"group\" FROM STUDENTS WHERE student_id = ?;");
+            preparedStatementGroup.setInt(1,id);
+            ResultSet resultSet = preparedStatementGroup.executeQuery();
+            resultSet.next();
+            int groupId = resultSet.getInt("group");
+
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("SELECT * FROM STUDENTS WHERE \"group\" = ?;");
+            preparedStatement.setInt(1,groupId);
+            ResultSet result = preparedStatement.executeQuery();
+
+            students = new ArrayList<>();
+
+            while (result.next()) {
+                Student student = new Student();
+                student.setName(result.getString("name"));
+                student.setSurname(result.getString("surname"));
+                student.setId(result.getInt("student_id"));
+                students.add(student);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -150,16 +182,16 @@ public class StudentDAO {
                     connection.prepareStatement("DELETE FROM students WHERE student_id = ?");
             preparedStatementStudents.setInt(1,id);
             preparedStatementStudents.executeUpdate();
-            PreparedStatement preparedStatementUsers =
-                    connection.prepareStatement("DELETE FROM users WHERE id = ?");
-            preparedStatementUsers.setInt(1,id);
-            preparedStatementUsers.executeUpdate();
 
             PreparedStatement preparedStatementLogInfo =
                     connection.prepareStatement("DELETE FROM login_info WHERE id = ?");
             preparedStatementLogInfo.setInt(1,id);
             preparedStatementLogInfo.executeUpdate();
 
+            PreparedStatement preparedStatementUsers =
+                    connection.prepareStatement("DELETE FROM users WHERE id = ?");
+            preparedStatementUsers.setInt(1,id);
+            preparedStatementUsers.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

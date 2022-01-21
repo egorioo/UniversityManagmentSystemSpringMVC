@@ -1,0 +1,24 @@
+package spring.controllers;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+
+@Controller
+@RequestMapping("/students")
+public class StudentFiltersController {
+    @RequestMapping("/filters")
+    public String index(
+            @RequestParam(value = "participant", required = false) String participant,
+            @RequestParam(value = "country", required = false) String country,
+            @RequestParam(value = "action", required = false) String action,
+            @RequestParam(value = "id", required = false) Integer id,
+            Model model
+    ) {
+        System.out.println(action);
+        return "redirect:/students";
+    }
+}

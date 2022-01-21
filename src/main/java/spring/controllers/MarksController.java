@@ -28,7 +28,7 @@ public class MarksController {
     }
 
     @GetMapping()
-    @PreAuthorize("hasAuthority('users:read')")
+    @PreAuthorize("hasAnyAuthority('users:read','users:write')")
     public String studentMarks(@PathVariable int id, Model model) {
         Student student = markDAO.initMarks(id);
         model.addAttribute("student",student);

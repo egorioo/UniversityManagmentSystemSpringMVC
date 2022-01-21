@@ -1,21 +1,30 @@
 package spring.models;
 
+import javax.validation.constraints.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Student {
     private int id;
+    @NotEmpty(message = "Name should not be empty")
+    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
     private String name;
+    @NotEmpty(message = "Name should not be empty")
+    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
     private String surname;
+    @NotEmpty(message = "Name should not be empty")
+    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
     private String patronymic;
+    @Email(message = "Email should be valid")
     private String email;
-
+    @NotEmpty(message = "Name should not be empty")
+    @Min(value = 1, message = "Course must be equal to 1 or more")
+    @Max(value = 6, message = "Course can not be greater 6")
+    private int course;
     private Group group;
     private int groupId;
     private Faculty faculty;
-
-
-
     private int facultyId;
 
     public int getGroupId() {
@@ -34,7 +43,7 @@ public class Student {
         this.facultyId = facultyId;
     }
 
-    private int course;
+
     private List<Subject> subjects = new ArrayList<>();
 
     public Group getGroup() {

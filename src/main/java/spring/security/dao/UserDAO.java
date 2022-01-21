@@ -93,6 +93,19 @@ public class UserDAO {
         }
     }
 
+    public void updateAdmin(int id, User user) {
+        try {
+            PreparedStatement preparedStatement =
+                    connection.prepareStatement("UPDATE login_info SET login = ?, password = ? WHERE id = ?");
+            preparedStatement.setString(1,user.getLogin());
+            preparedStatement.setString(2, Encoder.passwordEncoder().encode(user.getPassword()));
+            preparedStatement.setInt(3, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     /*public Optional<User> findByEmail(String email) {
         User user = null;
         try {

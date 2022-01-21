@@ -1,8 +1,12 @@
 package spring.controllers;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import spring.dao.FacultyDAO;
 import spring.dao.GroupDAO;
@@ -37,7 +41,7 @@ public class StudentsController {
 
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('users:read')")
+    @PreAuthorize("hasAnyAuthority('users:read','users:write')")
     public String studentIndex(@PathVariable("id") int id, Model model) {
         model.addAttribute("student",studentDAO.showIndex(id));
         return "students/student";
@@ -55,8 +59,10 @@ public class StudentsController {
 
     @PostMapping()
     @PreAuthorize("hasAuthority('users:write')")
-    public String create(@ModelAttribute("student") Student student) {
-        System.out.println(student);
+    public String create(@ModelAttribute("student") @Valid Student student, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "students/newStudent";
+        }
         studentDAO.save(student);
         return "redirect:/students";
     }
@@ -99,5 +105,24 @@ public class StudentsController {
     public String changeLogInfo(@ModelAttribute("user") User user, @PathVariable("id") int id) {
         userDAO.updateUser(id, user);
         return "redirect:/students/" + id;
+    }
+
+    @GetMapping("/{id}/group")
+    public String studentGroup(@PathVariable("id") int id, Model model) {
+        model.addAttribute("studentsGroup", studentDAO.getStudentsByGroup(id));
+        model.addAttribute("student",studentDAO.showIndex(id));
+        return "students/studentsByGroup";
+    }
+
+    @GetMapping("/{id}/card")
+    public String studentCard(@PathVariable("id") int id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        User user = userDAO.findByEmail(currentPrincipalName);
+        model.addAttribute("user", user);
+        model.addAttribute("student",studentDAO.showIndex(id));
+        model.addAttribute("group",groupDAO.getStudentGroup(id));
+        model.addAttribute("faculty",facultyDAO.getStudentFaculty(id));
+        return "students/studentCard";
     }
 }

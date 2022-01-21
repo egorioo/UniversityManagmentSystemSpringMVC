@@ -16,7 +16,7 @@
     <input type="submit" value="Update!"/>
 </form>
 <form sec:authorize="hasAuthority('users:write')" th:method="GET" th:action="@{/students/{id}(id=${student.getId()})}">
-    <input type="submit" value="Main">
+    <input type="submit" value="Student">
 </form>
 </body>
 </html>

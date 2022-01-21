@@ -15,7 +15,6 @@ public class AuthController {
 
     @GetMapping("/success")
     public String getSuccessPage() {
-        System.out.println("=---------------success controller to /-----------------");
         return "redirect:/";
     }
 }
