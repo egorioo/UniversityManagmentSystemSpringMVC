@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
 <head>
     <meta charset="UTF-8">
     <title>Group</title>
@@ -16,9 +16,10 @@
 <table border="1">
     <tr th:each="subject : ${student.getSubjects()}">
         <td th:text="${subject.getName()}">Value</td>
+        <td th:text="${subject.getHours()}">Value</td>
         <td th:text="${subject.getMark()}">Value</td>
-        <td><a th:href="@{/students/{id}/marks/edit/{subject}(id=${student.getId()},subject=${subject.getName()})}">Edit</a></td>
-        <td>
+        <td sec:authorize="hasAuthority('users:write')" ><a th:href="@{/students/{id}/marks/edit/{subject}(id=${student.getId()},subject=${subject.getName()})}">Edit</a></td>
+        <td sec:authorize="hasAuthority('users:write')" >
             <!--update
             <form th:method="DELETE" th:action="@{/students/{id}/marks(id=${student.getId()})}">
                 <input type="submit" value="Delete">
@@ -30,12 +31,17 @@
     </tr>
 </table>
 
-<form th:method="GET" th:action="@{/students/{id}/marks/new(id=${student.getId()})}">
+<form sec:authorize="hasAuthority('users:write')" th:method="GET" th:action="@{/students/{id}/marks/new(id=${student.getId()})}">
     <input type="submit" value="Add new mark">
 </form>
 
-<form th:method="GET" th:action="@{/students}">
-    <input type="submit" value="All students">
+<form sec:authorize="hasAuthority('users:read')" th:method="GET" th:action="@{/students/{id}(id=${student.getId()})}">
+    <input type="submit" value="Main">
 </form>
+
+<form sec:authorize="hasAuthority('users:write')" th:method="GET" th:action="@{/students/{id}(id=${student.getId()})}">
+    <input type="submit" value="Student">
+</form>
+
 </body>
 </html>

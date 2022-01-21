@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Students</title>
+</head>
+<body>
+<div th:each="student : ${studentsGroup}">
+    <a th:href="@{/students/{id}/card(id=${student.getId()})}" th:text="${student.getName() + ' ' + student.getSurname()}">student</a>
+</div>
+
+<form th:method="GET" th:action="@{/students/{id}(id=${student.getId()})}">
+    <input type="submit" value="Main">
+</form>
+</body>
+</html>

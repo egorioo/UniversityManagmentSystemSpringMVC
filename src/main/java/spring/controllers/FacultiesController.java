@@ -1,5 +1,6 @@
 package spring.controllers;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,18 +17,21 @@ public class FacultiesController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('users:write')")
     public String showAll(Model model) {
         model.addAttribute("faculties",facultyDAO.getAllFaculties());
         return "faculties/allFaculties";
     }
 
     @GetMapping("/{id}/edit")
+    @PreAuthorize("hasAuthority('users:write')")
     public String editFaculty(Model model, @PathVariable int id) {
         model.addAttribute("faculty",facultyDAO.getFacultyIndex(id));
         return "faculties/editFaculty";
     }
 
     @GetMapping("/new")
+    @PreAuthorize("hasAuthority('users:write')")
     public String newFaculty(Model model) {
         Faculty faculty = new Faculty();
         model.addAttribute("faculty",faculty);
@@ -35,6 +39,7 @@ public class FacultiesController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasAuthority('users:write')")
     public String create(@ModelAttribute("faculty") Faculty faculty) {
         /*facultyDAO.addFaculty(faculty);*/
         System.out.println(faculty);
@@ -43,6 +48,7 @@ public class FacultiesController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasAuthority('users:write')")
     public String update(@ModelAttribute("faculty") Faculty faculty, @PathVariable int id) {
         facultyDAO.updateFaculty(id,faculty);
         System.out.println(faculty);
@@ -50,6 +56,7 @@ public class FacultiesController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('users:write')")
     public String delete(@PathVariable int id) {
         facultyDAO.deleteFaculty(id);
         return "redirect:/faculties";

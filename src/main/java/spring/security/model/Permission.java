@@ -1,8 +1,8 @@
 package spring.security.model;
 
 public enum Permission {
-    DEVELOPERS_READ("developers:read"),
-    DEVELOPERS_WRITE("developers:write");
+    USERS_READ("users:read"),
+    USERS_WRITE("users:write");
 
     private final String permission;
 

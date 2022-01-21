@@ -1,31 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html  xmlns:th="http://www.thymeleaf.org"
+       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Student</title>
 </head>
 <body>
 
-<h2></h2>
+<div sec:authorize="hasAuthority('users:write')">Has Role ADMIN</div>
 
-<!--<form action="/students">
-    <input type="submit" value="Students">
-</form>
-
-<form action="/disciplines">
-    <input type="submit" value="Disciplines">
-</form>
-
-<form action="/groups">
-    <input type="submit" value="Groups">
-</form>
-
-<form action="/faculties">
-    <input type="submit" value="Faculties">
-</form>
-
-<form action="/auth/logout" method="POST">
-    <button type="submit">Logout</button>
-</form>-->
 </body>
 </html>
