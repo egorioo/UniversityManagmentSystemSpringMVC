@@ -7,33 +7,15 @@ import java.sql.*;
 
 @Component
 public class AdminDAO {
-    private static Connection connection;
-    private static String URL = "jdbc:postgresql://localhost:5432/db";
-    private static String username = "postgres";
-    private static String password = "postgres";
-
-    static {
-        System.out.println("test");
-        try {
-            Class.forName("org.postgresql.Driver");
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            connection = DriverManager.getConnection(URL, username, password);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
 
     public Admin getAdminById(int id) {
         Admin admin = null;
-        try {
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement("SELECT * FROM ADMINS WHERE ID = ?");
-            preparedStatement.setInt(1,id);
+        try (Connection connection = JDBC.getInstance().getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("SELECT * FROM ADMINS WHERE ID = ?");
+        ) {
+
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             admin = new Admin();

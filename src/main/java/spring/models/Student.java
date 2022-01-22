@@ -18,7 +18,6 @@ public class Student {
     private String patronymic;
     @Email(message = "Email should be valid")
     private String email;
-    @NotEmpty(message = "Name should not be empty")
     @Min(value = 1, message = "Course must be equal to 1 or more")
     @Max(value = 6, message = "Course can not be greater 6")
     private int course;

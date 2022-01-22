@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import spring.dao.*;
 import spring.models.Student;
 import spring.models.Subject;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/students/{id}/marks")
@@ -53,7 +56,10 @@ public class MarksController {
 
     @PatchMapping()
     @PreAuthorize("hasAuthority('users:write')")
-    public String updateMark(@ModelAttribute Subject subject, @PathVariable("id") int id) {
+    public String updateMark(@ModelAttribute @Valid Subject subject, BindingResult bindingResult, @PathVariable("id") int id, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/students/"+id+"/marks/edit/" + subject.getName();
+        }
         markDAO.updateMark(id,subject);
         return "redirect:/students/" + id + "/marks";
     }

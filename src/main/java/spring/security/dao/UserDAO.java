@@ -1,6 +1,7 @@
 package spring.security.dao;
 
 import org.springframework.stereotype.Component;
+import spring.dao.JDBC;
 import spring.security.model.Role;
 import spring.security.model.User;
 import spring.security.util.Encoder;
@@ -9,33 +10,13 @@ import java.sql.*;
 
 @Component
 public class UserDAO {
-
-    private static Connection connection;
-    private static String URL = "jdbc:postgresql://localhost:5432/db";
-    private static String username = "postgres";
-    private static String password = "postgres";
-
-    static {
-        System.out.println("test");
-        try {
-            Class.forName("org.postgresql.Driver");
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            connection = DriverManager.getConnection(URL, username, password);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
-
     public User findByEmail(String email) {
         User user = null;
-        try {
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement("SELECT * FROM login_info where login = ?");
+        try (Connection connection = JDBC.getInstance().getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("SELECT * FROM login_info where login = ?");
+             ) {
+
             preparedStatement.setString(1,email);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
@@ -61,9 +42,11 @@ public class UserDAO {
 
     public boolean isStudent(int id) {
         boolean isStudent = false;
-        try {
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement("SELECT * FROM USERS WHERE id = ?");
+        try (Connection connection = JDBC.getInstance().getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("SELECT * FROM USERS WHERE id = ?");
+             ) {
+
             preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
@@ -75,16 +58,18 @@ public class UserDAO {
     }
 
     public void updateUser(int id, User user) {
-        try {
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement("UPDATE login_info SET login = ?, password = ? WHERE id = ?");
+        try (Connection connection = JDBC.getInstance().getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("UPDATE login_info SET login = ?, password = ? WHERE id = ?");
+             PreparedStatement preparedStatementStudent =
+                     connection.prepareStatement("UPDATE students SET email = ? WHERE student_id = ?");
+             ) {
+
             preparedStatement.setString(1,user.getLogin());
             preparedStatement.setString(2, Encoder.passwordEncoder().encode(user.getPassword()));
             preparedStatement.setInt(3, id);
             preparedStatement.executeUpdate();
 
-            PreparedStatement preparedStatementStudent =
-                    connection.prepareStatement("UPDATE students SET email = ? WHERE student_id = ?");
             preparedStatementStudent.setString(1,user.getLogin());
             preparedStatementStudent.setInt(2, id);
             preparedStatementStudent.executeUpdate();
@@ -94,9 +79,11 @@ public class UserDAO {
     }
 
     public void updateAdmin(int id, User user) {
-        try {
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement("UPDATE login_info SET login = ?, password = ? WHERE id = ?");
+        try (Connection connection = JDBC.getInstance().getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("UPDATE login_info SET login = ?, password = ? WHERE id = ?");
+             ){
+
             preparedStatement.setString(1,user.getLogin());
             preparedStatement.setString(2, Encoder.passwordEncoder().encode(user.getPassword()));
             preparedStatement.setInt(3, id);
