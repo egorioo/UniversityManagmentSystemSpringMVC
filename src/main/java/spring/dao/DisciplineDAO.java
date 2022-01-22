@@ -12,37 +12,12 @@ import java.util.List;
 
 @Component
 public class DisciplineDAO {
-    private static Connection connection;
-    private static String URL = "jdbc:postgresql://localhost:5432/db";
-    private static String username = "postgres";
-    private static String password = "postgres";
-    /*private final StudentDAO studentDAO;
-
-    @Autowired
-    public MarkDAO(StudentDAO studentDAO) {
-        this.studentDAO = studentDAO;
-    }*/
-
-    static {
-        try {
-            Class.forName("org.postgresql.Driver");
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            connection = DriverManager.getConnection(URL, username, password);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-    }
-
     public List<Subject> getAllDisciplines() {
         List<Subject> subjects = new ArrayList<>();
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet =  statement.executeQuery("SELECT * FROM disciplines");
+        try (Connection connection = JDBC.getInstance().getConnection();
+             Statement statement = connection.createStatement();) {
+
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM disciplines");
 
             while (resultSet.next()) {
                 Subject subject = new Subject();
@@ -60,10 +35,12 @@ public class DisciplineDAO {
     //
     public Subject getDisciplineIndex(int id) {
         Subject subject = null;
-        try {
-            PreparedStatement preparedStatement =
-                    connection.prepareStatement("SELECT * FROM disciplines where discipline_id = ?");
-            preparedStatement.setInt(1,id);
+        try (Connection connection = JDBC.getInstance().getConnection();
+             PreparedStatement preparedStatement =
+                     connection.prepareStatement("SELECT * FROM disciplines where discipline_id = ?");
+        ) {
+
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             subject = new Subject();
@@ -77,12 +54,13 @@ public class DisciplineDAO {
     }
 
     public void updateDiscipline(int id, Subject subject) {
-        try {
-            PreparedStatement preparedStatementDiscipline =
-                    connection.prepareStatement("UPDATE disciplines SET discipline_name = ?, discipline_hours = ? where discipline_id = ?");
-            preparedStatementDiscipline.setString(1,subject.getName());
-            preparedStatementDiscipline.setInt(2,subject.getHours());
-            preparedStatementDiscipline.setInt(3,id);
+        try (Connection connection = JDBC.getInstance().getConnection();
+             PreparedStatement preparedStatementDiscipline =
+                     connection.prepareStatement("UPDATE disciplines SET discipline_name = ?, discipline_hours = ? where discipline_id = ?");
+        ) {
+            preparedStatementDiscipline.setString(1, subject.getName());
+            preparedStatementDiscipline.setInt(2, subject.getHours());
+            preparedStatementDiscipline.setInt(3, id);
             preparedStatementDiscipline.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -90,11 +68,13 @@ public class DisciplineDAO {
     }
 
     public void createDiscipline(Subject subject) {
-        try {
-            PreparedStatement preparedStatementDiscipline =
-                    connection.prepareStatement("INSERT INTO disciplines(discipline_name, discipline_hours) VALUES(?,?)");
-            preparedStatementDiscipline.setString(1,subject.getName());
-            preparedStatementDiscipline.setInt(2,subject.getHours());
+        try (Connection connection = JDBC.getInstance().getConnection();
+             PreparedStatement preparedStatementDiscipline =
+                     connection.prepareStatement("INSERT INTO disciplines(discipline_name, discipline_hours) VALUES(?,?)");
+        ) {
+
+            preparedStatementDiscipline.setString(1, subject.getName());
+            preparedStatementDiscipline.setInt(2, subject.getHours());
             preparedStatementDiscipline.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -102,10 +82,11 @@ public class DisciplineDAO {
     }
 
     public void deleteDiscipline(int id) {
-        try {
-            PreparedStatement preparedStatementDiscipline =
-                    connection.prepareStatement("DELETE FROM disciplines WHERE discipline_id = ?");
-            preparedStatementDiscipline.setInt(1,id);
+        try (Connection connection = JDBC.getInstance().getConnection();
+             PreparedStatement preparedStatementDiscipline =
+                     connection.prepareStatement("DELETE FROM disciplines WHERE discipline_id = ?");
+        ) {
+            preparedStatementDiscipline.setInt(1, id);
             preparedStatementDiscipline.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

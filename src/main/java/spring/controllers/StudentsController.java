@@ -59,8 +59,10 @@ public class StudentsController {
 
     @PostMapping()
     @PreAuthorize("hasAuthority('users:write')")
-    public String create(@ModelAttribute("student") @Valid Student student, BindingResult bindingResult) {
+    public String create(@ModelAttribute("student") @Valid Student student, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("faculties", facultyDAO.getAllFaculties());
+            model.addAttribute("groups", groupDAO.getAllGroups());
             return "students/newStudent";
         }
         studentDAO.save(student);
@@ -79,7 +81,12 @@ public class StudentsController {
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasAuthority('users:write')")
-    public String update(@ModelAttribute("student") Student student, @PathVariable("id") int id) {
+    public String update(@ModelAttribute("student") @Valid Student student,BindingResult bindingResult, @PathVariable("id") int id, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("faculties", facultyDAO.getAllFaculties());
+            model.addAttribute("groups", groupDAO.getAllGroups());
+            return "students/editStudent";
+        }
         studentDAO.update(id,student);
         return "redirect:/students/" + id;
     }
@@ -102,7 +109,11 @@ public class StudentsController {
     }
 
     @PatchMapping("/{id}/settings")
-    public String changeLogInfo(@ModelAttribute("user") User user, @PathVariable("id") int id) {
+    public String changeLogInfo(@ModelAttribute("user") @Valid User user,BindingResult bindingResult, @PathVariable("id") int id, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("student", studentDAO.showIndex(id));
+            return "students/settings";
+        }
         userDAO.updateUser(id, user);
         return "redirect:/students/" + id;
     }

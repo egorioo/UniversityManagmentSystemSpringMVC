@@ -2,9 +2,16 @@ package spring.security.model;
 
 import spring.security.model.Role;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 public class User {
     private int id;
+    @Email(message = "Email should be valid")
     private String login;
+    @NotEmpty(message = "Password should not be empty")
+    @Size(min = 4, max = 30, message = "Password should be greater then 4 characters")
     private String password;
     private Role role;
 

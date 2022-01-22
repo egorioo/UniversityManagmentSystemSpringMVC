@@ -40,6 +40,7 @@
     <br/>
     <label for="course">Enter course: </label>
     <input type="text" th:field="*{course}" id="course"/>
+    <div style="color:red" th:if="${#fields.hasErrors('course')}" th:errors="*{course}">Name Error</div>
     <br/>
     <input type="submit" value="Create student"/>
 </form>
