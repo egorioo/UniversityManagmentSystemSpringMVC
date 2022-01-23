@@ -1,5 +1,6 @@
 package spring.dao;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import spring.models.Student;
@@ -12,7 +13,7 @@ import java.util.List;
 @Component
 public class MarkDAO {
     private final StudentDAO studentDAO;
-
+    private static final Logger LOGGER = Logger.getLogger(StudentDAO.class);
     @Autowired
     public MarkDAO(StudentDAO studentDAO) {
         this.studentDAO = studentDAO;
@@ -44,6 +45,7 @@ public class MarkDAO {
             student.setSubjects(subjects);
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
         return student;
     }
@@ -66,6 +68,7 @@ public class MarkDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 
@@ -80,6 +83,7 @@ public class MarkDAO {
             preparedStatementDiscipline.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 
@@ -93,6 +97,7 @@ public class MarkDAO {
             preparedStatementDiscipline.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 

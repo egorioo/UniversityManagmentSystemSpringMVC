@@ -15,7 +15,6 @@ import spring.models.Student;
 import spring.security.dao.UserDAO;
 import spring.security.model.User;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController

@@ -11,7 +11,6 @@ import spring.dao.*;
 import spring.models.Student;
 import spring.models.Subject;
 
-import javax.validation.Valid;
 @RestController
 @RequestMapping("/students/{id}/marks")
 public class MarksRestController {

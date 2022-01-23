@@ -1,5 +1,6 @@
 package spring.dao;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import spring.models.Faculty;
 import spring.models.Group;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Component
 public class FacultyDAO {
+    private static final Logger LOGGER = Logger.getLogger(FacultyDAO.class);
     public List<Faculty> getAllFaculties() {
         List<Faculty> faculties = new ArrayList<>();
 
@@ -29,6 +31,7 @@ public class FacultyDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
         return faculties;
     }
@@ -49,6 +52,7 @@ public class FacultyDAO {
             faculty.setFullName(resultSet.getString("faculty_full_name"));
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
         return faculty;
     }
@@ -69,6 +73,7 @@ public class FacultyDAO {
             faculty.setFullName(resultSet.getString("faculty_full_name"));
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
         return faculty;
     }
@@ -84,6 +89,7 @@ public class FacultyDAO {
             preparedStatementDiscipline.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 
@@ -98,6 +104,7 @@ public class FacultyDAO {
             preparedStatementDiscipline.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 
@@ -110,6 +117,7 @@ public class FacultyDAO {
             preparedStatementDiscipline.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 }

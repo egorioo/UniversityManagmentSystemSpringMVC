@@ -1,5 +1,6 @@
 package spring.controllers;
 
+import org.apache.log4j.Logger;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import spring.models.Group;
 public class GroupsController {
     private final GroupDAO groupDAO;
     private final FacultyDAO facultyDAO;
+    private static final Logger LOGGER = Logger.getLogger(GroupsController.class);
 
     public GroupsController(GroupDAO groupDAO, FacultyDAO facultyDAO) {
         this.groupDAO = groupDAO;
@@ -23,6 +25,7 @@ public class GroupsController {
     @PreAuthorize("hasAuthority('users:write')")
     public String showAll(Model model) {
         model.addAttribute("groups",groupDAO.getAllGroups());
+        LOGGER.debug("show all groups");
         return "groups/allGroups";
     }
 
@@ -31,6 +34,7 @@ public class GroupsController {
     public String editFaculty(Model model, @PathVariable int id) {
         model.addAttribute("group",groupDAO.getGroupIndex(id));
         model.addAttribute("faculties", facultyDAO.getAllFaculties());
+        LOGGER.debug("group editing window open");
         return "groups/editGroup";
     }
 
@@ -40,6 +44,7 @@ public class GroupsController {
         Group group = new Group();
         model.addAttribute("group",group);
         model.addAttribute("faculties", facultyDAO.getAllFaculties());
+        LOGGER.debug("group adding window open");
         return "groups/newGroup";
     }
 
@@ -47,6 +52,8 @@ public class GroupsController {
     @PreAuthorize("hasAuthority('users:write')")
     public String create(@ModelAttribute("group") Group group) {
         groupDAO.createGroup(group);
+        LOGGER.debug("group has been added");
+        LOGGER.debug(group);
         return "redirect:/groups";
     }
 
@@ -54,6 +61,8 @@ public class GroupsController {
     @PreAuthorize("hasAuthority('users:write')")
     public String update(@ModelAttribute("group") Group group, @PathVariable int id) {
         groupDAO.updateGroup(id,group);
+        LOGGER.debug("group has been changed");
+        LOGGER.debug(group);
         return "redirect:/groups";
     }
 
@@ -61,6 +70,7 @@ public class GroupsController {
     @PreAuthorize("hasAuthority('users:write')")
     public String delete(@PathVariable int id) {
         groupDAO.deleteGroup(id);
+        LOGGER.debug("group - " + id + " has been removed");
         return "redirect:/groups";
     }
 }

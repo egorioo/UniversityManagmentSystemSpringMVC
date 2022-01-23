@@ -21,9 +21,6 @@ public class UserDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             user = new User();
-            System.out.println(resultSet.getInt("id"));
-            System.out.println(resultSet.getString("login"));
-            System.out.println(resultSet.getString("password"));
             user.setId(resultSet.getInt("id"));
             user.setLogin(resultSet.getString("login"));
             user.setPassword(resultSet.getString("password"));

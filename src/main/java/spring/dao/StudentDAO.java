@@ -1,5 +1,6 @@
 package spring.dao;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import spring.models.Group;
@@ -18,6 +19,8 @@ import java.util.Properties;
 
 @Component
 public class StudentDAO {
+    private static final Logger LOGGER = Logger.getLogger(StudentDAO.class);
+
     public List<Student> showAll() {
         List<Student> students = new ArrayList<>();
         try (Connection connection = JDBC.getInstance().getConnection();
@@ -33,6 +36,7 @@ public class StudentDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
         return students;
     }
@@ -64,6 +68,7 @@ public class StudentDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
         return students;
     }
@@ -90,6 +95,7 @@ public class StudentDAO {
             student.setCourse(resultSet.getInt("course"));
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
         return student;
     }
@@ -125,6 +131,7 @@ public class StudentDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 
@@ -147,6 +154,7 @@ public class StudentDAO {
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 
@@ -175,6 +183,7 @@ public class StudentDAO {
             preparedStatementUsers.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 }

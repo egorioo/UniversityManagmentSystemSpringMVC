@@ -18,7 +18,6 @@ public class StudentFiltersController {
             @RequestParam(value = "id", required = false) Integer id,
             Model model
     ) {
-        System.out.println(action);
         return "redirect:/students";
     }
 }
