@@ -1,5 +1,6 @@
 package spring.controllers;
-import javax.validation.Valid;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -22,6 +23,7 @@ public class StudentsController {
     private final FacultyDAO facultyDAO;
     private final GroupDAO groupDAO;
     private final UserDAO userDAO;
+    private static final Logger LOGGER = Logger.getLogger(StudentsController.class);
 
     @Autowired
     public StudentsController(StudentDAO studentDAO, FacultyDAO facultyDAO, GroupDAO groupDAO, UserDAO userDAO) {
@@ -36,6 +38,7 @@ public class StudentsController {
     @PreAuthorize("hasAuthority('users:write')")
     public String showAll(Model model) {
         model.addAttribute("students",studentDAO.showAll());
+        LOGGER.debug("show all students");
         return "students/allStudents";
     }
 
@@ -44,6 +47,8 @@ public class StudentsController {
     @PreAuthorize("hasAnyAuthority('users:read','users:write')")
     public String studentIndex(@PathVariable("id") int id, Model model) {
         model.addAttribute("student",studentDAO.showIndex(id));
+        LOGGER.debug("show student with " + id);
+        LOGGER.debug(studentDAO.showIndex(id));
         return "students/student";
     }
     //ok
@@ -53,19 +58,17 @@ public class StudentsController {
         model.addAttribute("student",new Student());
         model.addAttribute("faculties", facultyDAO.getAllFaculties());
         model.addAttribute("groups", groupDAO.getAllGroups());
+        LOGGER.debug("student creation");
         return "students/newStudent";
     }
     //ok
 
     @PostMapping()
     @PreAuthorize("hasAuthority('users:write')")
-    public String create(@ModelAttribute("student") @Valid Student student, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("faculties", facultyDAO.getAllFaculties());
-            model.addAttribute("groups", groupDAO.getAllGroups());
-            return "students/newStudent";
-        }
+    public String create(@ModelAttribute("student") Student student, Model model) {
         studentDAO.save(student);
+        LOGGER.debug("student created");
+        LOGGER.debug(student);
         return "redirect:/students";
     }
     //ok
@@ -76,18 +79,16 @@ public class StudentsController {
         model.addAttribute("student",studentDAO.showIndex(id));
         model.addAttribute("faculties", facultyDAO.getAllFaculties());
         model.addAttribute("groups", groupDAO.getAllGroups());
+        LOGGER.debug("student changing");
         return "students/editStudent";
     }
 
     @PatchMapping("/{id}")
     @PreAuthorize("hasAuthority('users:write')")
-    public String update(@ModelAttribute("student") @Valid Student student,BindingResult bindingResult, @PathVariable("id") int id, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("faculties", facultyDAO.getAllFaculties());
-            model.addAttribute("groups", groupDAO.getAllGroups());
-            return "students/editStudent";
-        }
+    public String update(@ModelAttribute("student") Student student, @PathVariable("id") int id, Model model) {
         studentDAO.update(id,student);
+        LOGGER.debug("student updated");
+        LOGGER.debug(student);
         return "redirect:/students/" + id;
     }
 
@@ -95,26 +96,25 @@ public class StudentsController {
     @PreAuthorize("hasAuthority('users:write')")
     public String delete(@PathVariable("id") int id) {
         studentDAO.delete(id);
+        LOGGER.debug("student with id " + id + "has been deleted");
         return "redirect:/students";
     }
 
     @GetMapping("/{id}/settings")
     public String settings(@PathVariable("id") int id,Model model) {
         Student student = studentDAO.showIndex(id);
-        String password = "";
         User user = userDAO.findByEmail(student.getEmail());
         model.addAttribute("user", user);
         model.addAttribute("student", student);
+        LOGGER.debug("open settings menu");
         return "students/settings";
     }
 
     @PatchMapping("/{id}/settings")
-    public String changeLogInfo(@ModelAttribute("user") @Valid User user,BindingResult bindingResult, @PathVariable("id") int id, Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("student", studentDAO.showIndex(id));
-            return "students/settings";
-        }
+    public String changeLogInfo(@ModelAttribute("user") User user, @PathVariable("id") int id, Model model) {
         userDAO.updateUser(id, user);
+        LOGGER.debug("user" + id + " was updated");
+        LOGGER.debug(user);
         return "redirect:/students/" + id;
     }
 
@@ -122,6 +122,7 @@ public class StudentsController {
     public String studentGroup(@PathVariable("id") int id, Model model) {
         model.addAttribute("studentsGroup", studentDAO.getStudentsByGroup(id));
         model.addAttribute("student",studentDAO.showIndex(id));
+        LOGGER.debug("student group page opened");
         return "students/studentsByGroup";
     }
 
@@ -134,6 +135,7 @@ public class StudentsController {
         model.addAttribute("student",studentDAO.showIndex(id));
         model.addAttribute("group",groupDAO.getStudentGroup(id));
         model.addAttribute("faculty",facultyDAO.getStudentFaculty(id));
+        LOGGER.debug("student card page opened");
         return "students/studentCard";
     }
 }

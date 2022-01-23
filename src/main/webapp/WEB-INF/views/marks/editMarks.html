@@ -11,7 +11,7 @@
     <label for="name">Discipline name: </label>
     <input type="text" th:field="*{name}" id="name" readonly/> <br/>
     <label for="mark">Discipline grade: </label>
-    <input type="text" th:field="*{mark}" id="mark"/> <br/>
+    <input type="number" th:field="*{mark}" id="mark" min="1" max="100"/> <br/>
     <br/>
     <input type="submit" value="Update!"/>
 </form>

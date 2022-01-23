@@ -9,10 +9,10 @@
     <label for="id">ID: </label>
     <input type="text" th:field="*{id}" id="id" readonly/> <br/>
     <label for="name">Enter name: </label>
-    <input type="text" th:field="*{name}" id="name"/>
+    <input type="text" th:field="*{name}" id="name" required minlength="5" maxlength="30"/>
     <br/>
     <label for="hours">Enter hours: </label>
-    <input type="text" th:field="*{hours}" id="hours"/>
+    <input type="number" th:field="*{hours}" id="hours" min="1" max="100"/>
     <br/>
     <input type="submit" value="Update discipline"/>
 </form>

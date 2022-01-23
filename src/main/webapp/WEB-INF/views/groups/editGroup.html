@@ -9,10 +9,10 @@
     <label for="id">ID: </label>
     <input type="text" th:field="*{id}" id="id" readonly/> <br/>
     <label for="groupCode">Enter group code: </label>
-    <input type="text" th:field="*{groupCode}" id="groupCode"/>
+    <input type="text" th:field="*{groupCode}" id="groupCode" required minlength="2" maxlength="10"/>
     <br/>
     <label for="fullName">Enter full name: </label>
-    <input type="text" th:field="*{fullName}" id="fullName"/>
+    <input type="text" th:field="*{fullName}" id="fullName" required minlength="2" maxlength="20"/>
     <br/>
     <label for="facultyId">Enter faculty: </label>
     <select size="1" th:field="*{facultyId}">

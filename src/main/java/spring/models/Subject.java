@@ -1,21 +1,11 @@
 package spring.models;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class Subject {
-    @NotEmpty(message = "Name should not be empty")
-    @Size(min = 2, max = 30, message = "Name should be between 2 and 30 characters")
     private String name;
-    @Min(value = 0, message = "Mark can`t be less then zero")
-    @Max(value = 100, message = "Mark cannot be greater than 100")
     private int mark;
     private int id;
-    @Min(value = 0, message = "Hours cannot be less than zero")
-    @Max(value = 10, message = "Hours cannot be greater than 100")
     private int hours;
 
     public Subject() {

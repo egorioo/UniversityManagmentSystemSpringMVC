@@ -1,5 +1,6 @@
 package spring.controllers;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -18,6 +19,7 @@ public class DefaultController {
 
     private final UserDAO userDAO;
     private final AdminDAO adminDAO;
+    private static final Logger LOGGER = Logger.getLogger(DefaultController.class);
 
     @Autowired
     public DefaultController(UserDAO userDAO, AdminDAO adminDAO) {
@@ -32,10 +34,15 @@ public class DefaultController {
         String currentPrincipalName = authentication.getName();
         User user = userDAO.findByEmail(currentPrincipalName);
         if (userDAO.isStudent(user.getId())) {
+            LOGGER.debug("student logged in");
+            LOGGER.debug(user);
+            LOGGER.debug("redirecting to /students/id");
             return "redirect:/students/" + user.getId();
         }
         else {
             model.addAttribute("admin",adminDAO.getAdminById(user.getId()));
+            LOGGER.debug("admin logged in");
+            LOGGER.debug(user);
             return "helloAdmin";
         }
     }

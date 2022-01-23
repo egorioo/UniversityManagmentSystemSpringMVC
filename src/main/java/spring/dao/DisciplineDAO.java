@@ -1,7 +1,9 @@
 package spring.dao;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import spring.controllers.DefaultController;
 import spring.models.Faculty;
 import spring.models.Student;
 import spring.models.Subject;
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Component
 public class DisciplineDAO {
+    private static final Logger LOGGER = Logger.getLogger(DisciplineDAO.class);
+
     public List<Subject> getAllDisciplines() {
         List<Subject> subjects = new ArrayList<>();
         try (Connection connection = JDBC.getInstance().getConnection();
@@ -28,6 +32,7 @@ public class DisciplineDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
         return subjects;
     }
@@ -49,6 +54,7 @@ public class DisciplineDAO {
             subject.setHours(resultSet.getInt("discipline_hours"));
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
         return subject;
     }
@@ -64,6 +70,7 @@ public class DisciplineDAO {
             preparedStatementDiscipline.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 
@@ -78,6 +85,7 @@ public class DisciplineDAO {
             preparedStatementDiscipline.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 
@@ -90,6 +98,7 @@ public class DisciplineDAO {
             preparedStatementDiscipline.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 }

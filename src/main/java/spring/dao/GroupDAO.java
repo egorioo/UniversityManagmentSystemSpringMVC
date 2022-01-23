@@ -1,5 +1,6 @@
 package spring.dao;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 import spring.models.Faculty;
 import spring.models.Group;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Component
 public class GroupDAO {
+    private static final Logger LOGGER = Logger.getLogger(GroupDAO.class);
     public List<Group> getAllGroups() {
         List<Group> groups = new ArrayList<>();
 
@@ -28,6 +30,7 @@ public class GroupDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
         return groups;
     }
@@ -48,8 +51,10 @@ public class GroupDAO {
             group.setFullName(resultSet.getString("group_full_name"));
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
         return group;
+
     }
 
     public Group getGroupIndex(int id) {
@@ -69,6 +74,7 @@ public class GroupDAO {
             group.setFacultyId(resultSet.getInt("faculty"));
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
         return group;
     }
@@ -86,6 +92,7 @@ public class GroupDAO {
             preparedStatementDiscipline.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 
@@ -101,6 +108,7 @@ public class GroupDAO {
             preparedStatementDiscipline.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 
@@ -114,6 +122,7 @@ public class GroupDAO {
             preparedStatementDiscipline.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+            LOGGER.error(e);
         }
     }
 }

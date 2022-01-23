@@ -9,10 +9,10 @@
   <label for="id">ID: </label>
   <input type="text" th:field="*{id}" id="id" readonly/> <br/>
   <label for="shortName">Enter short name: </label>
-  <input type="text" th:field="*{shortName}" id="shortName"/>
+  <input type="text" th:field="*{shortName}" id="shortName" required minlength="2" maxlength="10"/>
   <br/>
   <label for="fullName">Enter full name: </label>
-  <input type="text" th:field="*{fullName}" id="fullName"/>
+  <input type="text" th:field="*{fullName}" id="fullName" required minlength="5" maxlength="30"/>
   <br/>
   <input type="submit" value="Update faculty"/>
 </form>
