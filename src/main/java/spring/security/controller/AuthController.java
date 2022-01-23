@@ -10,7 +10,7 @@ public class AuthController {
 
     @GetMapping("/login")
     public String getLoginPage() {
-        return "login";
+        return "redirect:/";
     }
 
     @GetMapping("/success")

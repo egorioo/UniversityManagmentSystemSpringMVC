@@ -1,35 +1,106 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        input {
+            padding-bottom: 5px;
+            max-width: 250px;
+        }
+
+        select {
+            padding-bottom: 5px;
+            max-width: 100px;
+        }
+
+        form {
+            margin: 15px 0 0 15px;
+        }
+
+        label {
+            display: block;
+            float: left;
+            width: 150px;
+        }
+    </style>
 </head>
 <body>
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div  class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li sec:authorize="hasAuthority('users:write')" class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/students">Students</a>
+                    </li>
+                    <li sec:authorize="hasAuthority('users:write')" class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/groups">Groups</a>
+                    </li>
+                    <li sec:authorize="hasAuthority('users:write')" class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/disciplines">Disciplines</a>
+                    </li>
+                    <li sec:authorize="hasAuthority('users:write')" class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/faculties">Faculties</a>
+                    </li>
+
+                    <li sec:authorize="hasAuthority('users:read')" class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/students/{id}/marks(id=${student.getId()})}">Marks</a>
+                    </li>
+                    <li sec:authorize="hasAuthority('users:read')" class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/students/{id}/group(id=${student.getId()})}">Group</a>
+                    </li>
+                    <li sec:authorize="hasAuthority('users:read')" class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/students/{id}/settings(id=${student.getId()})}">Settings</a>
+                    </li>
+                </ul>
+                <form class="d-flex" action="/auth/logout" method="POST">
+                    <button class="btn btn-outline-danger" type="submit">Log out</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
 <form th:method="PATCH" th:action="@{/groups/{id}(id=${group.getId()})}" th:object="${group}">
-    <label for="id">ID: </label>
-    <input type="text" th:field="*{id}" id="id" readonly/> <br/>
-    <label for="groupCode">Enter group code: </label>
-    <input type="text" th:field="*{groupCode}" id="groupCode" required minlength="2" maxlength="10"/>
-    <br/>
-    <label for="fullName">Enter full name: </label>
-    <input type="text" th:field="*{fullName}" id="fullName" required minlength="2" maxlength="20"/>
-    <br/>
-    <label for="facultyId">Enter faculty: </label>
-    <select size="1" th:field="*{facultyId}">
+    <div class="mb-3">
+    <label for="id" class="form-label">ID: </label>
+    <input type="text" th:field="*{id}" id="id" class="form-control" readonly/>
+    </div>
+    <div class="mb-3">
+    <label for="groupCode" class="form-label">Enter group code: </label>
+    <input type="text" th:field="*{groupCode}" id="groupCode" class="form-control" required minlength="2" maxlength="10"/>
+    </div>
+    <div class="mb-3">
+        <label for="fullName" class="form-label">Enter full name: </label>
+        <input type="text" th:field="*{fullName}" id="fullName" class="form-control" required minlength="2" maxlength="20"/>
+
+    </div>
+    <div class="mb-3">
+    <label for="facultyId" class="form-label">Enter faculty: </label>
+    <select class="form-select" aria-label="Default select example" size="1" th:field="*{facultyId}">
         <option th:each="faculty : ${faculties}"
                 th:value="${faculty.id}"
                 th:utext="${faculty.shortName}"/>
     </select>
-    <br/>
-    <input type="submit" value="Update group"/>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update group</button>
 </form>
 
 <form th:method="DELETE" th:action="@{/groups/{id}(id=${group.getId()})}">
-    <input type="submit" value="Delete group">
+    <button type="submit" class="btn btn-outline-danger">Delete group</button>
 </form>
 
 <form th:method="GET" th:action="@{/groups}">
-    <input type="submit" value="All groups">
+    <button type="submit" class="btn btn-outline-secondary">All groups</button>
 </form>
 </body>
 </html>
