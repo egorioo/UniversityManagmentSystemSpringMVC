@@ -49,6 +49,7 @@ public class GroupDAO {
             group.setId(resultSet.getInt("group_id"));
             group.setGroupCode(resultSet.getString("group_code"));
             group.setFullName(resultSet.getString("group_full_name"));
+
         } catch (SQLException e) {
             e.printStackTrace();
             LOGGER.error(e);

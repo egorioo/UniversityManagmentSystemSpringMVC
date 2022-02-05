@@ -21,6 +21,7 @@ public class DisciplinesRestController {
     }
 
     @RequestMapping(value = "/api", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    //@GetMapping("/api")
     @ResponseBody
     @PreAuthorize("hasAuthority('users:write')")
     public List<Subject> showAll() {
