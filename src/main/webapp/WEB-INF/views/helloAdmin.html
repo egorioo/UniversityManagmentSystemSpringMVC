@@ -13,61 +13,12 @@
     </style>
 </head>
 <body>
-<!--fix rename home-->
-<header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Home</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/students">Students</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/groups">Groups</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/disciplines">Disciplines</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/faculties">Faculties</a>
-                    </li>
-                </ul>
-                <form class="d-flex" action="/auth/logout" method="POST">
-                    <button class="btn btn-outline-danger" type="submit">Log out</button>
-                </form>
-            </div>
-        </div>
-    </nav>
-</header>
 
+<div th:insert="templates/header :: copy"></div>
 
 <p class="display-6" th:text="${'Name: ' + admin.getName()}">NAME</p>
 <p class="display-6" th:text="${'Surname: ' + admin.getSurname()}">SURNAME</p>
 <p class="display-6" th:text="${'Patronymic: ' + admin.getPatronymic()}">PATRONYMIC</p>
-
-<!--<form th:method="GET" th:action="@{/settings}">
-    <input type="submit" value="Settings">
-</form>-->
-
-<!--<form th:method="GET" th:action="@{/disciplines}">
-    <input type="submit" value="Disciplines">
-</form>
-
-<form th:method="GET" th:action="@{/students}">
-    <button class="btn btn-sm btn-outline-secondary" type="submit">Students</button>
-</form>
-
-<form th:method="GET" th:action="@{/faculties}">
-    <input type="submit" value="Faculties">
-</form>
-
-<form th:method="GET" th:action="@{/groups}">
-    <input type="submit" value="Groups">
-</form>-->
 
 </body>
 </html>

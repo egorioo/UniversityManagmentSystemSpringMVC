@@ -9,7 +9,7 @@
       max-width: 300px;
     }
 
-    form {
+    .form_ {
       margin: 15px 0 0 15px;
     }
 
@@ -22,48 +22,10 @@
 </head>
 <body>
 
-<header>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">Home</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div  class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li sec:authorize="hasAuthority('users:write')" class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/students">Students</a>
-          </li>
-          <li sec:authorize="hasAuthority('users:write')" class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/groups">Groups</a>
-          </li>
-          <li sec:authorize="hasAuthority('users:write')" class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/disciplines">Disciplines</a>
-          </li>
-          <li sec:authorize="hasAuthority('users:write')" class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/faculties">Faculties</a>
-          </li>
-
-          <li sec:authorize="hasAuthority('users:read')" class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/students/{id}/marks(id=${student.getId()})}">Marks</a>
-          </li>
-          <li sec:authorize="hasAuthority('users:read')" class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/students/{id}/group(id=${student.getId()})}">Group</a>
-          </li>
-          <li sec:authorize="hasAuthority('users:read')" class="nav-item">
-            <a class="nav-link active" aria-current="page" th:href="@{/students/{id}/settings(id=${student.getId()})}">Settings</a>
-          </li>
-        </ul>
-        <form class="d-flex" action="/auth/logout" method="POST">
-          <button class="btn btn-outline-danger" type="submit">Log out</button>
-        </form>
-      </div>
-    </div>
-  </nav>
-</header>
+<div th:insert="templates/header :: copy"></div>
 
 
-<form th:method="PATCH" th:action="@{/faculties/{id}(id=${faculty.getId()})}" th:object="${faculty}">
+<form class="form_" th:method="PATCH" th:action="@{/faculties/{id}(id=${faculty.getId()})}" th:object="${faculty}">
   <div class="mb-3">
   <label for="id" class="form-label">ID: </label>
   <input type="text" th:field="*{id}" id="id" class="form-control" readonly/>
@@ -79,7 +41,7 @@
   <button type="submit" class="btn btn-primary">Update faculty</button>
 </form>
 
-<form th:method="GET" th:action="@{/faculties}">
+<form class="form_" th:method="GET" th:action="@{/faculties}">
   <button type="submit" class="btn btn-outline-secondary">All faculties</button>
 </form>
 </body>
