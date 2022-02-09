@@ -3,4 +3,8 @@
 *.iml
 *.iws
 log/
-target/
+target/classes
+target/generated-sources
+target/maven-archiver
+target/maven-status
+target/UniversityManagmentSystemSpringMVC
