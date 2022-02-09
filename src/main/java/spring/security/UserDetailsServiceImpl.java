@@ -25,8 +25,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user.getLogin() == null) {
             throw new UsernameNotFoundException("User doesn't exists");
         }
-        /*User user = userDAO.findByEmail(email).orElseThrow(() ->
-                new UsernameNotFoundException("User doesn't exists"));*/
         return SecurityUser.fromUser(user);
     }
 }

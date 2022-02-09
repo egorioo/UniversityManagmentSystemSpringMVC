@@ -58,4 +58,6 @@ public class SpringConfig implements WebMvcConfigurer {
         resolver.setCharacterEncoding("UTF-8");
         registry.viewResolver(resolver);
     }
+
+
 }
