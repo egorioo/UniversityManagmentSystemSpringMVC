@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 public class GroupManager {
-    private String url = "http://localhost:8080/groups";
+    private String url = "http://host.docker.internal:8076/groups";
 
     private final ReadJson reader;
 
